@@ -1,4 +1,4 @@
-package com.dooboolab.androidjavamodules.audio;
+package com.dooboolab.androidjavamodules.ui.audio;
 
 import com.dooboolab.androidjavamodules.R;
 import android.support.v7.app.AppCompatActivity;

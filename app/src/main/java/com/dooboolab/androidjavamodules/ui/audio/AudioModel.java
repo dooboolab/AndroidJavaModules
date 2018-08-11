@@ -1,4 +1,4 @@
-package com.dooboolab.androidjavamodules.audio;
+package com.dooboolab.androidjavamodules.ui.audio;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;

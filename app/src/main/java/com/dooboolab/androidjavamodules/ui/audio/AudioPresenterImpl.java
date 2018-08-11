@@ -1,14 +1,14 @@
-package com.dooboolab.androidjavamodules.audio;
+package com.dooboolab.androidjavamodules.ui.audio;
 
 import android.view.View;
 
 public class AudioPresenterImpl implements AudioPresenter{
-  private AudioModel audioModel;
-  private View audioView;
+  private AudioModel model;
+  private View view;
 
   public AudioPresenterImpl(View view) {
-    this.audioModel = new AudioModel();
-    this.audioView = view;
+    this.model = new AudioModel();
+    this.view = view;
   }
 
   /*

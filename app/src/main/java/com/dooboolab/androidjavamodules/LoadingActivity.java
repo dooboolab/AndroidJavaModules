@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.dooboolab.androidjavamodules.main.MainActivity;
+import com.dooboolab.androidjavamodules.ui.main.MainActivity;
 
 public class LoadingActivity extends AppCompatActivity {
   private final String TAG = "LoadingActivity";
@@ -22,6 +22,6 @@ public class LoadingActivity extends AppCompatActivity {
         startActivity(i);
         finish();
       }
-    }, 3000);
+    }, 1500);
   }
 }

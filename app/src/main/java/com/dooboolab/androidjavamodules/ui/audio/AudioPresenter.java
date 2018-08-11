@@ -1,4 +1,4 @@
-package com.dooboolab.androidjavamodules.audio;
+package com.dooboolab.androidjavamodules.ui.audio;
 
 public interface AudioPresenter {
   void startRecord(final String path);
