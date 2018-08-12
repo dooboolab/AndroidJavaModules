@@ -2,12 +2,13 @@ package com.dooboolab.androidjavamodules.ui.audio;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Environment;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class AudioModel {
-  final private static String FILE_LOCATION = "/sdcard/sound.mp4";
+  final private static String DEFAULT_FILE_LOCATION = Environment.getExternalStorageDirectory().getPath();
 
   private MediaRecorder mediaRecorder;
   private MediaPlayer mediaPlayer;
@@ -15,7 +16,14 @@ public class AudioModel {
   private TimerTask mTask;
   private Timer mTimer;
 
+  public static String getDefaultFileLocation() {
+    return DEFAULT_FILE_LOCATION;
+  }
+
   public MediaRecorder getMediaRecorder() {
+    if (this.mediaRecorder == null) {
+      this.mediaRecorder = new MediaRecorder();
+    }
     return mediaRecorder;
   }
 
@@ -24,6 +32,9 @@ public class AudioModel {
   }
 
   public MediaPlayer getMediaPlayer() {
+    if (this.mediaPlayer == null) {
+      this.mediaPlayer = new MediaPlayer();
+    }
     return mediaPlayer;
   }
 

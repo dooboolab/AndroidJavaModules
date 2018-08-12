@@ -1,5 +1,6 @@
 package com.dooboolab.androidjavamodules.ui.main;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.dooboolab.androidjavamodules.R;
+import com.dooboolab.androidjavamodules.ui.audio.AudioActivity;
 
 public class MainActivity extends AppCompatActivity implements MainView {
   private final String TAG = "MainActivity";
@@ -36,8 +38,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (values[0].equals("Audio")) {
-
-          presenter.openAudioActivity(MainActivity.this);
+          Intent i = new Intent(MainActivity.this, AudioActivity.class);
+          i.putExtra("title", values[0].equals("Audio"));
+          presenter.openAudioActivity(MainActivity.this, i);
         }
       }
     });

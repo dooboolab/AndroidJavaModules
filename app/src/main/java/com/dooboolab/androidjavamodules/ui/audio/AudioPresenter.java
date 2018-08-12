@@ -1,11 +1,16 @@
 package com.dooboolab.androidjavamodules.ui.audio;
 
+import android.app.Activity;
+
 public interface AudioPresenter {
-  void startRecord(final String path);
+  void initView();
+  void finishView();
+
+  void startRecord(Activity activity, String path);
   void stopRecord();
-  void startPlaying(final String path);
+  void startPlaying(String path);
   void stopPlaying();
-  void oausePlaying();
+  void pausePlaying();
   void resumePlaying();
   void seekToPlaying(int sec);
 }

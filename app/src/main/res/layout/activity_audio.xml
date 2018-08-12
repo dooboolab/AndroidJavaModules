@@ -7,4 +7,52 @@
   android:layout_height="match_parent"
   tools:context=".ui.audio.AudioActivity">
 
+  <TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="36dp"
+    android:text="00:00"
+    android:textColor="@android:color/black"
+    android:textSize="54sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>
+
+  <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView">
+    <ImageButton
+      android:id="@+id/btn_record"
+      android:layout_width="72dp"
+      android:layout_height="72dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="20dp"
+      android:background="@null"
+      android:contentDescription="@string/record_description"
+      android:scaleType="centerCrop"
+      android:src="@drawable/ic_record"
+    />
+    <ImageButton
+      android:id="@+id/btn_record_stop"
+      android:visibility="gone"
+      android:layout_width="72dp"
+      android:layout_height="72dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="20dp"
+      android:background="@null"
+      android:contentDescription="@string/record_description"
+      android:scaleType="centerCrop"
+      android:src="@drawable/ic_stop_record"
+      />
+  </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

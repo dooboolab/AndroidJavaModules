@@ -1,4 +1,5 @@
 <resources>
   <string name="app_name">AndroidJavaModules</string>
   <string name="loading">LOADING..</string>
+  <string name="record_description">Record sound.</string>
 </resources>

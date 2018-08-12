@@ -8,7 +8,7 @@ public class MainPresenterImpl implements MainPresenter {
   private MainModel model;
   private MainView view;
 
-  public MainPresenterImpl(MainView view) {
+  MainPresenterImpl(MainView view) {
     this.view = view;
   }
 
@@ -18,8 +18,7 @@ public class MainPresenterImpl implements MainPresenter {
   }
 
   @Override
-  public void openAudioActivity(Context context) {
-    Intent i = new Intent(context, AudioActivity.class);
-    context.startActivity(i);
+  public void openAudioActivity(Context context, Intent intent) {
+    context.startActivity(intent);
   }
 }
