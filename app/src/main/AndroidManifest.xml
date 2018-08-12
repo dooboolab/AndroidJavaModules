@@ -12,19 +12,19 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".LoadingActivity"
+    <activity android:name=".activities.LoadingActivity"
               android:theme="@style/AppThemeNoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".ui.main.MainActivity">
+    <activity android:name=".activities.main.MainActivity">
     </activity>
-    <activity android:name=".ui.audio.AudioActivity">
+    <activity android:name=".activities.audio.AudioActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value=".ui.main.MainActivity" />
+        android:value=".activities.main.MainActivity" />
     </activity>
   </application>
 

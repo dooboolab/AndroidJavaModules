@@ -1,20 +1,20 @@
-package com.dooboolab.androidjavamodules.ui.audio;
+package com.dooboolab.androidjavamodules.activities.audio;
 
 import com.dooboolab.androidjavamodules.R;
-import com.dooboolab.androidjavamodules.ui.main.MainPresenter;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class AudioActivity extends AppCompatActivity implements AudioView {
+  final private String TAG = "AudioActivity";
+
   private AudioPresenter presenter;
   private TextView txtRecordTimer;
   private ImageButton btnRecord;
@@ -37,6 +37,9 @@ public class AudioActivity extends AppCompatActivity implements AudioView {
   @Override
   public void initView() {
     final Activity activity = this;
+    txtRecordTimer = findViewById(R.id.txt_record);
+    txtRecordTimer.setText("00:00:00");
+
     btnRecord = findViewById(R.id.btn_record);
     btnRecordStop = findViewById(R.id.btn_record_stop);
     btnRecord.setOnClickListener(new View.OnClickListener() {
@@ -81,5 +84,11 @@ public class AudioActivity extends AppCompatActivity implements AudioView {
     if (!permissionToRecordAccepted ) {
       // finish();
     }
+  }
+
+  @Override
+  public void setRecorderTimer(String txt) {
+    Log.d(TAG, "setRecorderTimer: " + txt);
+    this.txtRecordTimer.setText(txt);
   }
 }

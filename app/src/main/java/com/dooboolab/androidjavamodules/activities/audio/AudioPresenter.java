@@ -1,4 +1,4 @@
-package com.dooboolab.androidjavamodules.ui.audio;
+package com.dooboolab.androidjavamodules.activities.audio;
 
 import android.app.Activity;
 

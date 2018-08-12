@@ -1,8 +1,7 @@
-package com.dooboolab.androidjavamodules.ui.main;
+package com.dooboolab.androidjavamodules.activities.main;
 
 import android.content.Context;
 import android.content.Intent;
-import com.dooboolab.androidjavamodules.ui.audio.AudioActivity;
 
 public class MainPresenterImpl implements MainPresenter {
   private MainModel model;

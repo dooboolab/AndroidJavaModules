@@ -1,4 +1,4 @@
-package com.dooboolab.androidjavamodules.ui.main;
+package com.dooboolab.androidjavamodules.activities.main;
 
 import android.content.Context;
 import android.content.Intent;

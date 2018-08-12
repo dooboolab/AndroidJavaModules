@@ -1,11 +1,12 @@
-package com.dooboolab.androidjavamodules;
+package com.dooboolab.androidjavamodules.activities;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.dooboolab.androidjavamodules.ui.main.MainActivity;
+import com.dooboolab.androidjavamodules.R;
+import com.dooboolab.androidjavamodules.activities.main.MainActivity;
 
 public class LoadingActivity extends AppCompatActivity {
   private final String TAG = "LoadingActivity";

@@ -1,4 +1,4 @@
-package com.dooboolab.androidjavamodules.ui.main;
+package com.dooboolab.androidjavamodules.activities.main;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.dooboolab.androidjavamodules.R;
-import com.dooboolab.androidjavamodules.ui.audio.AudioActivity;
+import com.dooboolab.androidjavamodules.activities.audio.AudioActivity;
 
 public class MainActivity extends AppCompatActivity implements MainView {
   private final String TAG = "MainActivity";
