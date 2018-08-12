@@ -3,15 +3,19 @@ package com.dooboolab.androidjavamodules.activities.audio;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AudioPresenterImpl implements AudioPresenter{
   final private String TAG = "AudioPresenterImpl";
@@ -77,7 +81,7 @@ public class AudioPresenterImpl implements AudioPresenter{
           Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
           Log.d(TAG, "time: " + time);
 
-          DateFormat format = new SimpleDateFormat("mm:ss.SS", Locale.US);
+          DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
           String displayTime = format.format(time);
           model.setRecordTime(time);
           view.setRecorderTimer(displayTime);
@@ -107,7 +111,85 @@ public class AudioPresenterImpl implements AudioPresenter{
   /*
    * Playing
    */
-  public void startPlaying(String path) {
+  public void startPlaying(final String path) {
+    if (this.model.getMediaPlayer() != null) {
+      Boolean isPaused = !this.model.getMediaPlayer().isPlaying()
+          && this.model.getMediaPlayer().getCurrentPosition() > 1;
+
+      if (isPaused) {
+        this.model.getMediaPlayer().start();
+        return;
+      }
+
+      Log.e(TAG, "Player is already running. Stop it first.");
+      return;
+    } else {
+      this.model.setMediaPlayer(new MediaPlayer());
+    }
+
+    try {
+      if (path == null) {
+        this.model.getMediaPlayer().setDataSource(AudioModel.DEFAULT_FILE_LOCATION);
+      } else {
+        this.model.getMediaPlayer().setDataSource(path);
+      }
+      this.model.getMediaPlayer().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(final MediaPlayer mp) {
+          Log.d(TAG, "mediaPlayer prepared and start");
+          mp.start();
+
+
+          /**
+           * Set timer task to send event to RN.
+           */
+          TimerTask mTask = new TimerTask() {
+            @Override
+            public void run() {
+//              WritableMap obj = Arguments.createMap();
+//              obj.putInt("duration", mp.getDuration());
+//              obj.putInt("current_position", mp.getCurrentPosition());
+//              sendEvent(reactContext, "rn-playback", obj);
+            }
+          };
+
+          Timer mTimer = new Timer();
+          mTimer.schedule(mTask, 0, 10);
+
+          String resolvedPath = path == null ? AudioModel.DEFAULT_FILE_LOCATION : path;
+        }
+      });
+      /**
+       * Detect when finish playing.
+       */
+      this.model.getMediaPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+          /**
+           * Send last event
+           */
+//          WritableMap obj = Arguments.createMap();
+//          obj.putInt("duration", mp.getDuration());
+//          obj.putInt("current_position", mp.getDuration());
+//          obj.putInt("justFinished", 1);
+//          sendEvent(reactContext, "rn-playback", obj);
+
+          /**
+           * Reset player.
+           */
+          Log.d(TAG, "Plays completed.");
+//          mTimer.cancel();
+          mp.stop();
+          mp.release();
+          model.setMediaPlayer(null);
+        }
+      });
+      this.model.getMediaPlayer().prepare();
+    } catch (IOException e) {
+      Log.e(TAG, "startPlay() io exception");
+    } catch (NullPointerException e) {
+      Log.e(TAG, "startPlay() null exception");
+    }
   }
 
   public void stopPlaying() {
