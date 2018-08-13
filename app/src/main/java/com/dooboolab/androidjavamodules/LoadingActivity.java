@@ -1,4 +1,4 @@
-package com.dooboolab.androidjavamodules.activities;
+package com.dooboolab.androidjavamodules;
 
 import android.content.Intent;
 import android.os.Handler;

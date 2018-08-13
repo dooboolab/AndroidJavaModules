@@ -8,7 +8,7 @@ public interface AudioPresenter {
 
   void startRecord(Activity activity, String path);
   void stopRecord();
-  void startPlaying(String path);
+  void startPlaying(Activity activity, String path);
   void stopPlaying();
   void pausePlaying();
   void resumePlaying();

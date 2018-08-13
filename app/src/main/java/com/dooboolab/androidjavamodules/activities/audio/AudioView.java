@@ -6,4 +6,5 @@ public interface AudioView {
   void showRecordPlay();
   void showRecordStop();
   void setRecorderTimer(String txt);
+  void setPlayerTimer(String txt);
 }

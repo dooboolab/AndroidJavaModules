@@ -11,14 +11,14 @@ import java.util.TimerTask;
 public class AudioModel {
   final public static String DEFAULT_FILE_LOCATION = Environment.getExternalStorageDirectory().getPath() + "/default.mp4";
   final public int RECORD_DELAY_MILLIS = 10;
+  final public int PLAY_DELAY_MILLIS = 10;
 
   private MediaRecorder mediaRecorder;
   private Runnable recorderTicker;
   private long recordTime = 0;
 
   private MediaPlayer mediaPlayer;
-  private TimerTask mTask;
-  private Timer mTimer;
+  private long playTime = 0;
 
   public MediaRecorder getMediaRecorder() {
     return mediaRecorder;
@@ -45,9 +45,6 @@ public class AudioModel {
   }
 
   public MediaPlayer getMediaPlayer() {
-    if (this.mediaPlayer == null) {
-      this.mediaPlayer = new MediaPlayer();
-    }
     return mediaPlayer;
   }
 
@@ -55,19 +52,11 @@ public class AudioModel {
     this.mediaPlayer = mediaPlayer;
   }
 
-  public TimerTask getmTask() {
-    return mTask;
+  public long getPlayTime() {
+    return playTime;
   }
 
-  public void setmTask(TimerTask mTask) {
-    this.mTask = mTask;
-  }
-
-  public Timer getmTimer() {
-    return mTimer;
-  }
-
-  public void setmTimer(Timer mTimer) {
-    this.mTimer = mTimer;
+  public void setPlayTime(long playTime) {
+    this.playTime = playTime;
   }
 }

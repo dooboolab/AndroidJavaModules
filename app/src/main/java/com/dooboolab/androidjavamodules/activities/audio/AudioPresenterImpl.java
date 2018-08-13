@@ -23,6 +23,7 @@ public class AudioPresenterImpl implements AudioPresenter{
   final private Handler playHandler = new Handler();
   final private AudioModel model;
   private AudioView view;
+  private Timer mTimer = new Timer();
 
   AudioPresenterImpl(AudioView view) {
     this.model = new AudioModel();
@@ -111,7 +112,7 @@ public class AudioPresenterImpl implements AudioPresenter{
   /*
    * Playing
    */
-  public void startPlaying(final String path) {
+  public void startPlaying(final Activity activity, final String path) {
     if (this.model.getMediaPlayer() != null) {
       Boolean isPaused = !this.model.getMediaPlayer().isPlaying()
           && this.model.getMediaPlayer().getCurrentPosition() > 1;
@@ -127,20 +128,23 @@ public class AudioPresenterImpl implements AudioPresenter{
       this.model.setMediaPlayer(new MediaPlayer());
     }
 
+    final AudioView audioView = this.view;
+    mTimer = new Timer();
+
     try {
       if (path == null) {
         this.model.getMediaPlayer().setDataSource(AudioModel.DEFAULT_FILE_LOCATION);
       } else {
         this.model.getMediaPlayer().setDataSource(path);
       }
+
       this.model.getMediaPlayer().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(final MediaPlayer mp) {
           Log.d(TAG, "mediaPlayer prepared and start");
           mp.start();
 
-
-          /**
+          /*
            * Set timer task to send event to RN.
            */
           TimerTask mTask = new TimerTask() {
@@ -150,22 +154,32 @@ public class AudioPresenterImpl implements AudioPresenter{
 //              obj.putInt("duration", mp.getDuration());
 //              obj.putInt("current_position", mp.getCurrentPosition());
 //              sendEvent(reactContext, "rn-playback", obj);
+
+              long time = mp.getCurrentPosition();
+              DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
+              final String displayTime = format.format(time);
+              model.setPlayTime(time);
+
+              activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                  audioView.setPlayerTimer(displayTime);
+                }
+              });
             }
           };
 
-          Timer mTimer = new Timer();
-          mTimer.schedule(mTask, 0, 10);
-
+          mTimer.schedule(mTask, 0, model.PLAY_DELAY_MILLIS);
           String resolvedPath = path == null ? AudioModel.DEFAULT_FILE_LOCATION : path;
         }
       });
-      /**
+      /*
        * Detect when finish playing.
        */
       this.model.getMediaPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mp) {
-          /**
+          /*
            * Send last event
            */
 //          WritableMap obj = Arguments.createMap();
@@ -174,36 +188,77 @@ public class AudioPresenterImpl implements AudioPresenter{
 //          obj.putInt("justFinished", 1);
 //          sendEvent(reactContext, "rn-playback", obj);
 
-          /**
+          /*
            * Reset player.
            */
           Log.d(TAG, "Plays completed.");
-//          mTimer.cancel();
+          mTimer.cancel();
           mp.stop();
           mp.release();
           model.setMediaPlayer(null);
         }
       });
       this.model.getMediaPlayer().prepare();
-    } catch (IOException e) {
-      Log.e(TAG, "startPlay() io exception");
-    } catch (NullPointerException e) {
-      Log.e(TAG, "startPlay() null exception");
+    } catch (Exception e) {
+      Log.e(TAG, "startPlay() exception");
     }
   }
 
   public void stopPlaying() {
+     mTimer.cancel();
+
+    if (this.model.getMediaPlayer() == null) {
+      return;
+    }
+
+    try {
+      this.model.getMediaPlayer().stop();
+      this.model.getMediaPlayer().release();
+      this.model.setMediaPlayer(null);
+    } catch (Exception e) {
+      Log.e(TAG, "stopPlay exception: " + e.getMessage());
+    }
   }
 
   public void pausePlaying() {
+    if (this.model.getMediaPlayer() == null) {
+      return;
+    }
 
+    try {
+      this.model.getMediaPlayer().pause();
+    } catch (Exception e) {
+      Log.e(TAG, "pausePlay exception: " + e.getMessage());
+    }
   }
 
   public void resumePlaying() {
+    if (this.model.getMediaPlayer() == null) {
+      return;
+    }
 
+    if (this.model.getMediaPlayer().isPlaying()) {
+      return;
+    }
+
+    try {
+      this.model.getMediaPlayer().seekTo(this.model.getMediaPlayer().getCurrentPosition());
+      this.model.getMediaPlayer().start();
+    } catch (Exception e) {
+      Log.e(TAG, "mediaPlayer resume: " + e.getMessage());
+    }
   }
 
   public void seekToPlaying(int sec) {
+    if (this.model.getMediaPlayer() == null) {
+      return;
+    }
 
+    int currentMillis = this.model.getMediaPlayer().getCurrentPosition();
+    int millis = sec * 1000 + currentMillis;
+
+    Log.d(TAG, "seekTo: " + millis);
+
+    this.model.getMediaPlayer().seekTo(millis);
   }
 }

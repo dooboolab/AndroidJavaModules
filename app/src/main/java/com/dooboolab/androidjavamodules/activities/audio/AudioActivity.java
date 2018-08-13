@@ -12,13 +12,19 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class AudioActivity extends AppCompatActivity implements AudioView {
+public class AudioActivity extends AppCompatActivity implements AudioView, View.OnClickListener{
   final private String TAG = "AudioActivity";
 
   private AudioPresenter presenter;
   private TextView txtRecordTimer;
+  private TextView txtPlayTimer;
   private ImageButton btnRecord;
   private ImageButton btnRecordStop;
+  private ImageButton btnPlay;
+  private ImageButton btnPause;
+  private ImageButton btnPlayStop;
+  private ImageButton btnStepBack;
+  private ImageButton btnStepForward;
 
   // Requesting permission to RECORD_AUDIO
   private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -38,22 +44,24 @@ public class AudioActivity extends AppCompatActivity implements AudioView {
   public void initView() {
     final Activity activity = this;
     txtRecordTimer = findViewById(R.id.txt_record);
+    txtPlayTimer = findViewById(R.id.txt_play);
     txtRecordTimer.setText("00:00:00");
+    txtPlayTimer.setText(("00:00:00"));
 
     btnRecord = findViewById(R.id.btn_record);
+    btnRecord.setOnClickListener(this);
     btnRecordStop = findViewById(R.id.btn_record_stop);
-    btnRecord.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        presenter.startRecord(activity, null);
-      }
-    });
-    btnRecordStop.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        presenter.stopRecord();
-      }
-    });
+    btnRecordStop.setOnClickListener(this);
+    btnPlay = findViewById(R.id.btn_play);
+    btnPlay.setOnClickListener(this);
+    btnPause = findViewById(R.id.btn_pause);
+    btnPause.setOnClickListener(this);
+    btnPlayStop = findViewById(R.id.btn_play_stop);
+    btnPlayStop.setOnClickListener(this);
+    btnStepBack = findViewById(R.id.btn_step_back);
+    btnStepBack.setOnClickListener(this);
+    btnStepForward = findViewById(R.id.btn_step_forward);
+    btnStepForward.setOnClickListener(this);
   }
 
   @Override
@@ -76,7 +84,7 @@ public class AudioActivity extends AppCompatActivity implements AudioView {
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    switch (requestCode){
+    switch (requestCode) {
       case REQUEST_RECORD_AUDIO_PERMISSION:
         permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
         break;
@@ -87,8 +95,41 @@ public class AudioActivity extends AppCompatActivity implements AudioView {
   }
 
   @Override
+  public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.btn_record:
+        presenter.startRecord(this, null);
+        break;
+      case R.id.btn_record_stop:
+        presenter.stopRecord();
+        break;
+      case R.id.btn_play:
+        presenter.startPlaying(this, null);
+        break;
+      case R.id.btn_pause:
+        presenter.pausePlaying();
+        break;
+      case R.id.btn_play_stop:
+        presenter.stopPlaying();
+        break;
+      case R.id.btn_step_back:
+        presenter.seekToPlaying(-3);
+        break;
+      case R.id.btn_step_forward:
+        presenter.seekToPlaying(3);
+        break;
+    }
+  }
+
+  @Override
   public void setRecorderTimer(String txt) {
     Log.d(TAG, "setRecorderTimer: " + txt);
     this.txtRecordTimer.setText(txt);
+  }
+
+  @Override
+  public void setPlayerTimer(String txt) {
+    Log.d(TAG, "setPlayerTimer: " + txt);
+    this.txtPlayTimer.setText(txt);
   }
 }
